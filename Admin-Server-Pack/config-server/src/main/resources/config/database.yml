@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    hikari:
+      maximum-pool-size: '2'
+    username: root
+    url: jdbc:mysql://localhost/public?createDatabaseIfNotExist=true&nullCatalogMeansCurrent=true
+    password: root
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
