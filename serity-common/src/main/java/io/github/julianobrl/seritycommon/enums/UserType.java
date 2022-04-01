@@ -1,6 +1,8 @@
 package io.github.julianobrl.seritycommon.enums;
 
-public enum UserType {
+import org.springframework.security.core.GrantedAuthority;
+
+public enum UserType implements GrantedAuthority {
 	ADMIN("ADMIN"),
 	TEACHER("TEACHER"),
 	STUDENT("STUDENT"),
@@ -17,6 +19,11 @@ public enum UserType {
 	
 	@Override
 	public String toString() {
+		return definition;
+	}
+
+	@Override
+	public String getAuthority() {
 		return definition;
 	}
 	

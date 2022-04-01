@@ -1,22 +1,15 @@
 package io.github.julianobrl.seritycommon.entitys;
 
-import java.time.LocalDateTime;
-
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import org.springframework.format.annotation.DateTimeFormat;
+import org.apache.commons.lang3.builder.ToStringExclude;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
-
-import io.github.julianobrl.seritycommon.enums.UserType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,38 +17,40 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 
+
 @Data
 @Entity
 @Builder
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "User")
-@EqualsAndHashCode
 public class User{
 	
 	@Id
-	@GeneratedValue
-	private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
+    private Long id;
 	
-	@NotNull
-	private String username;
-	
-	@NotNull
-	@JsonProperty(access = Access.WRITE_ONLY)
-	private String password;
-	
-	@NotNull
-	@Enumerated(EnumType.STRING)
-	private UserType type;
-	
-	@Builder.Default
-	@JsonProperty(access = Access.WRITE_ONLY)
-	@JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
-	@DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
-	private LocalDateTime createdAt = LocalDateTime.now();
-	
-	@Builder.Default
-	@JsonProperty(access = Access.WRITE_ONLY)
-	private boolean active = true;
+    @NotNull(message = "The field 'username' is mandatory")
+    @Column(nullable = false)
+    private String username;
+    
+    @NotNull(message = "The field 'password' is mandatory")
+    @Column(nullable = false)
+    @ToStringExclude
+    private String password;
+    
+    @NotNull(message = "The field 'role' is mandatory")
+    @Column(nullable = false)
+    @Builder.Default
+    private String role = "USER";
+
+    public User(@NotNull User applicationUser) {
+        this.id = applicationUser.getId();
+        this.username = applicationUser.getUsername();
+        this.password = applicationUser.getPassword();
+        this.role = applicationUser.getRole();
+    }
 		
 }

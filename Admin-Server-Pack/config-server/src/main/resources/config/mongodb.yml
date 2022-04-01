@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    hikari:
+      maximum-pool-size: '2'
+    username: root
+    url: jdbc:mysql://localhost/public?createDatabaseIfNotExist=true&nullCatalogMeansCurrent=true
+    password: root
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      username: admin
+      password: admin
+      database: public
